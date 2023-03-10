@@ -6,12 +6,13 @@ ThisBuild / scalaVersion := "2.13.10"
 val `scala-native-aws-lambda` = "scala-native-aws-lambda"
 val domain = "domain"
 val srvc = "service"
+val `scala-native` = "scala-native-service"
 
 lazy val root =
   project
     .in(file("."))
     .settings(name := `scala-native-aws-lambda`)
-    .aggregate(domain_model, service)
+    .aggregate(domain_model, service, scala_native_service)
     .settings(publish / skip := true)
 
 lazy val domain_model =
@@ -30,6 +31,22 @@ lazy val service =
     .settings(serviceDependencies)
     .dependsOn(domain_model)
 
+lazy val scala_native_service =
+  project
+    .enablePlugins(ScalaNativePlugin)
+    .in(file(s"./modules/${`scala-native`}"))
+    .settings(name := s"${`scala-native-aws-lambda`}-${`scala-native`}")
+    .settings(scalaNativeSettings)
+    .settings(
+      excludeDependencies ++= Seq(excl(com.github.alexarchambault.`scalacheck-shapeless_1.16`))
+    )
+    .settings(Compile / sources := (service / Compile / sources).value)
+    .dependsOn(domain_model)
+
+import sbt.librarymanagement.InclExclRule
+
+def excl(m: ModuleID): InclExclRule = InclExclRule(m.organization, m.name)
+
 lazy val commonSettings = {
   lazy val commonCompilerPlugins = Seq(
     addCompilerPlugin(com.olegpy.`better-monadic-for`),
@@ -41,7 +58,6 @@ lazy val commonSettings = {
     Compile / console / scalacOptions := {
       (Compile / console / scalacOptions)
         .value
-        .filterNot(_.contains("wartremover"))
         .filterNot(Scalac.Lint.toSet)
         .filterNot(Scalac.FatalWarnings.toSet) :+ "-Wconf:any:silent"
     },
@@ -78,7 +94,18 @@ lazy val serviceDependencies = Seq(
   libraryDependencies ++= Seq(
     // additional service main libs
   )
-//  libraryDependencies ++= Seq(
-//    // additional service test libs
-//  ).map(_ % Test),
+  //  libraryDependencies ++= Seq(
+  //    // additional service test libs
+  //  ).map(_ % Test),
 )
+
+lazy val scalaNativeSettings = {
+  // import to add Scala Native options
+  import scala.scalanative.build._
+
+  nativeConfig ~= { c =>
+    c.withLTO(LTO.none) // thin
+      .withMode(Mode.debug) // releaseFast
+      .withGC(GC.immix) // commix
+  }
+}
