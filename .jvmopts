@@ -1,0 +1,4 @@
+-Xms1g
+-Xmx12g
+-XshowSettings:vm
+-Xss4m
