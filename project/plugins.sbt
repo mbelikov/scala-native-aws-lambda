@@ -14,4 +14,4 @@ addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.0")
 
 addSbtPlugin("org.scala-native" % "sbt-scala-native" % "0.4.10")
 
-addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.11")
+addSbtPlugin("com.github.sbt" % "sbt-native-packager" % "1.9.16")

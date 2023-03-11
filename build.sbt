@@ -92,6 +92,17 @@ lazy val commonSettings = {
 lazy val baseDependencies = Seq(
   libraryDependencies ++= Seq(
     // main domain libs
+    refined,
+    `refined-cats`,
+    newtype,
+    squants,
+    `derevo-core`,
+    `derevo-cats`,
+    `derevo-circe-magnolia`,
+    `circe-core`,
+    `circe-generic`,
+    `circe-refined`,
+    `monocle-core`,
   ),
   libraryDependencies ++= Seq(
     com.eed3si9n.expecty.expecty,
