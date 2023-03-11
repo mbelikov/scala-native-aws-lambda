@@ -1,13 +1,14 @@
 package dev.migapril.aws.lambda
 
+import java.util.UUID
+
 import derevo.cats._
 import derevo.circe.magnolia._
 import derevo.derive
 import io.estatico.newtype.macros.newtype
 import squants.Money
-import optics.uuid
 
-import java.util.UUID
+import dev.migapril.aws.lambda.optics.uuid
 
 /** Model class definitions with auto derived decoder, encoder, show etc. type classes.
  *

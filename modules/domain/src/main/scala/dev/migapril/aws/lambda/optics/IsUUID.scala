@@ -1,9 +1,10 @@
 package dev.migapril.aws.lambda.optics
 
-import dev.migapril.aws.lambda.Derive
-
 import java.util.UUID
+
 import monocle.Iso
+
+import dev.migapril.aws.lambda.Derive
 
 trait IsUUID[A] {
   def _UUID: Iso[UUID, A]

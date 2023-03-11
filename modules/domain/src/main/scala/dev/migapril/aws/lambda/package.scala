@@ -1,10 +1,10 @@
 package dev.migapril.aws
 
+import cats._
 import cats.kernel.Eq
-import cats.{Monoid, Show}
-import io.circe.{Decoder, Encoder}
+import io.circe._
 import squants.Money
-import squants.market.{Currency, USD}
+import squants.market._
 
 package object lambda extends OrphanInstances
 
