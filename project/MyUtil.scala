@@ -2,6 +2,7 @@ import scala.util._
 import scala.sys.process._
 
 import sbt._
+import sbt.librarymanagement.InclExclRule
 
 object MyUtil {
   def styled(in: Any): String =
@@ -47,4 +48,6 @@ object MyUtil {
 
   val Cctt: String =
     "compile->compile;test->test"
+
+  def excl(m: ModuleID): InclExclRule = InclExclRule(m.organization, m.name)
 }

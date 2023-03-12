@@ -36,6 +36,18 @@ import dev.migapril.aws.lambda.optics.uuid
  * order.show
  * }
  * </pre>
+ *
+ * The aim is to use Scala's type safety for data definitions and use only data libs supporting Scala native.
+ * Following libs support Scala native:
+ *
+ *   - refined (since 0.10.1)
+ *   - squants (since 1.8.0)
+ *   - circe (since 0.14.3)
+ *
+ * Following libs don't support Scala native:
+ *
+ *   - newtype (s. https://github.com/estatico/scala-newtype/pull/61 & https://github.com/marcesquerra/scala-newtype/tree/AddScalaNative)
+ *   - derevo (s. https://github.com/tofu-tf/derevo/issues/309)
  */
 object model {
   @derive(decoder, encoder, eqv, show)

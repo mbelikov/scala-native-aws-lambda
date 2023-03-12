@@ -1,4 +1,6 @@
 import sbt._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
+import sbt.Keys.libraryDependencies
 
 object Version {
   val circe = "0.14.2"
@@ -7,7 +9,10 @@ object Version {
   val newtype = "0.4.4"
   val refined = "0.10.2"
   val squants = "1.8.3"
-  val tofu = "0.10.3"
+  val tofu = "0.11.1"
+
+  val logback = "1.4.5"
+  val slf4j = "2.0.2"
 }
 
 object Dependencies {
@@ -32,6 +37,45 @@ object Dependencies {
   val `circe-refined` = circe("refined")
 
   val `monocle-core` = "dev.optics" %% "monocle-core" % Version.monocle
+
+  val `java-logback-core` = "ch.qos.logback" % "logback-core" % Version.logback
+  val `java-logback-classic` = "ch.qos.logback" % "logback-classic" % Version.logback
+  val `java-slf4j` = "org.slf4j" % "slf4j-api" % Version.slf4j
+
+  val _baseDependencies = Seq(libraryDependencies ++= {
+    def derevo(artifact: String): ModuleID = "tf.tofu" %%% s"derevo-$artifact" % Version.derevo
+
+    def circe(artifact: String): ModuleID = "io.circe" %%% s"circe-$artifact" % Version.circe
+
+    Seq(
+      "eu.timepit" %%% "refined" % Version.refined,
+      "eu.timepit" %%% "refined-cats" % Version.refined,
+      "io.estatico" %%% "newtype" % Version.newtype,
+      "org.typelevel" %%% "squants" % Version.squants,
+      derevo("core"),
+      derevo("cats"),
+      derevo("circe-magnolia"),
+      derevo("pureconfig"),
+      circe("core"),
+      circe("generic"),
+      circe("parser"),
+      circe("refined"),
+      "dev.optics" %%% "monocle-core" % Version.monocle
+
+      //      refined,
+      //      `refined-cats`,
+      //      newtype,
+      //      squants,
+
+      //      `derevo-core`,
+      //      `derevo-cats`,
+      //      `derevo-circe-magnolia`,
+      //      `circe-core`,
+      //      `circe-generic`,
+      //      `circe-refined`,
+      //      `monocle-core`,
+    )
+  })
 
   object com {
     object eed3si9n {

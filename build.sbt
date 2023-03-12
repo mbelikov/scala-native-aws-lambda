@@ -1,4 +1,5 @@
 import Dependencies._
+import MyUtil.excl
 
 ThisBuild / organization := "dev.migapril"
 ThisBuild / scalaVersion := "2.13.10"
@@ -21,6 +22,7 @@ lazy val domain_model =
     .in(file(s"./modules/$domain"))
     .settings(name := s"${`scala-native-aws-lambda`}-$domain")
     .settings(commonSettings)
+    .settings(_baseDependencies)
     .settings(baseDependencies)
 
 lazy val service =
@@ -38,6 +40,9 @@ lazy val scala_native_service =
     .in(file(s"./modules/${`scala-native`}"))
     .settings(name := s"${`scala-native-aws-lambda`}-${`scala-native`}")
     .settings(scalaNativeSettings)
+    .settings(_baseDependencies)
+    .settings(baseDependencies)
+    .settings(serviceDependencies)
     .settings(
       excludeDependencies ++= Seq(excl(com.github.alexarchambault.`scalacheck-shapeless_1.16`))
     )
@@ -50,15 +55,12 @@ lazy val graalvm_native_service =
     .in(file(s"./modules/${`graalvm-native`}"))
     .settings(name := s"${`scala-native-aws-lambda`}-${`graalvm-native`}")
     .settings(graalvmNativeSettings)
+    .settings(serviceDependencies)
     .settings(
       excludeDependencies ++= Seq(excl(com.github.alexarchambault.`scalacheck-shapeless_1.16`))
     )
     .settings(Compile / sources := (service / Compile / sources).value)
     .dependsOn(domain_model)
-
-import sbt.librarymanagement.InclExclRule
-
-def excl(m: ModuleID): InclExclRule = InclExclRule(m.organization, m.name)
 
 lazy val commonSettings = {
   lazy val commonCompilerPlugins = Seq(
@@ -90,20 +92,20 @@ lazy val commonSettings = {
 }
 
 lazy val baseDependencies = Seq(
-  libraryDependencies ++= Seq(
-    // main domain libs
-    refined,
-    `refined-cats`,
-    newtype,
-    squants,
-    `derevo-core`,
-    `derevo-cats`,
-    `derevo-circe-magnolia`,
-    `circe-core`,
-    `circe-generic`,
-    `circe-refined`,
-    `monocle-core`,
-  ),
+  //  libraryDependencies ++= Seq(
+  //    // main domain libs
+  //    refined,
+  //    `refined-cats`,
+  //    newtype,
+  //    squants,
+  //    `derevo-core`,
+  //    `derevo-cats`,
+  //    `derevo-circe-magnolia`,
+  //    `circe-core`,
+  //    `circe-generic`,
+  //    `circe-refined`,
+  //    `monocle-core`,
+  //  ),
   libraryDependencies ++= Seq(
     com.eed3si9n.expecty.expecty,
     com.github.alexarchambault.`scalacheck-shapeless_1.16`,
@@ -111,12 +113,15 @@ lazy val baseDependencies = Seq(
     org.scalatest.scalatest,
     org.scalatestplus.`scalacheck-1-16`,
     org.typelevel.`discipline-scalatest`,
-  ).map(_ % Test),
+  ).map(_ % Test)
 )
 
 lazy val serviceDependencies = Seq(
   libraryDependencies ++= Seq(
     // additional service main libs
+    `java-logback-core`,
+    `java-logback-classic`,
+    `java-slf4j`,
   )
   //  libraryDependencies ++= Seq(
   //    // additional service test libs
