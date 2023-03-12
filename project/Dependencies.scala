@@ -3,9 +3,9 @@ import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import sbt.Keys.libraryDependencies
 
 object Version {
-  val circe = "0.14.2"
+  val circe = "0.14.5"
   val derevo = "0.13.0"
-  val monocle = "3.1.0"
+  val monocle = "3.2.0"
   val newtype = "0.4.4"
   val refined = "0.10.2"
   val squants = "1.8.3"
@@ -49,18 +49,18 @@ object Dependencies {
 
     Seq(
       "eu.timepit" %%% "refined" % Version.refined,
-      "eu.timepit" %%% "refined-cats" % Version.refined,
-      "io.estatico" %%% "newtype" % Version.newtype,
+      //      "eu.timepit" %%% "refined-cats" % Version.refined, // no scala native version
+      //      "io.estatico" %%% "newtype" % Version.newtype,
       "org.typelevel" %%% "squants" % Version.squants,
-      derevo("core"),
-      derevo("cats"),
-      derevo("circe-magnolia"),
-      derevo("pureconfig"),
+      //      derevo("core"),
+      //      derevo("cats"),
+      //      derevo("circe-magnolia"),
+      //      derevo("pureconfig"),
       circe("core"),
       circe("generic"),
       circe("parser"),
       circe("refined"),
-      "dev.optics" %%% "monocle-core" % Version.monocle
+      "dev.optics" %%% "monocle-core" % Version.monocle,
 
       //      refined,
       //      `refined-cats`,

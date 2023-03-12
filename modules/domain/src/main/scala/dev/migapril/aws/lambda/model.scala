@@ -2,13 +2,13 @@ package dev.migapril.aws.lambda
 
 import java.util.UUID
 
-import derevo.cats._
-import derevo.circe.magnolia._
-import derevo.derive
-import io.estatico.newtype.macros.newtype
+//import derevo.cats._
+//import derevo.circe.magnolia._
+//import derevo.derive
+//import io.estatico.newtype.macros.newtype
 import squants.Money
 
-import dev.migapril.aws.lambda.optics.uuid
+//import dev.migapril.aws.lambda.optics.uuid
 
 /** Model class definitions with auto derived decoder, encoder, show etc. type classes.
  *
@@ -49,24 +49,24 @@ import dev.migapril.aws.lambda.optics.uuid
  *   - newtype (s. https://github.com/estatico/scala-newtype/pull/61 & https://github.com/marcesquerra/scala-newtype/tree/AddScalaNative)
  *   - derevo (s. https://github.com/tofu-tf/derevo/issues/309)
  */
-object model {
-  @derive(decoder, encoder, eqv, show)
-  @newtype
-  case class Quantity(value: Int)
+object model extends DeriveCirce {
+  //  @derive(decoder, encoder, eqv, show)
+  //  @newtype
+  case class Quantity(value: Int) extends AnyVal
 
-  @derive(decoder, encoder, keyDecoder, keyEncoder, eqv, show, uuid)
-  @newtype
-  case class ItemId(value: UUID)
+  //  @derive(decoder, encoder, keyDecoder, keyEncoder, eqv, show, uuid)
+  //  @newtype
+  case class ItemId(value: UUID) extends AnyVal
 
-  @derive(decoder, encoder, eqv, show)
-  @newtype
-  case class OrderId(value: UUID)
+  //  @derive(decoder, encoder, eqv, show)
+  //  @newtype
+  case class OrderId(value: UUID) extends AnyVal
 
-  @derive(decoder, encoder, eqv, show)
-  @newtype
-  case class PaymentId(value: UUID)
+  //  @derive(decoder, encoder, eqv, show)
+  //  @newtype
+  case class PaymentId(value: UUID) extends AnyVal
 
-  @derive(decoder, encoder, eqv, show)
+  //  @derive(decoder, encoder, eqv, show)
   case class Order(
                     id: OrderId,
                     paymentId: PaymentId,
