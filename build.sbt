@@ -14,16 +14,27 @@ lazy val root =
   project
     .in(file("."))
     .settings(name := `scala-native-aws-lambda`)
-    .aggregate(domain_model, service, scala_native_service, graalvm_native_service)
+    .aggregate(domain_model.jvm, service, scala_native_service, graalvm_native_service)
     .settings(publish / skip := true)
 
 lazy val domain_model =
-  project
+  crossProject(JVMPlatform, NativePlatform)
     .in(file(s"./modules/$domain"))
     .settings(name := s"${`scala-native-aws-lambda`}-$domain")
     .settings(commonSettings)
     .settings(_baseDependencies)
     .settings(baseDependencies)
+    .nativeSettings(nativeAdditionalDependencies)
+
+//lazy val scala_native_domain_model = {
+//  project
+//    .enablePlugins(ScalaNativePlugin)
+//    .in(file(s"./modules/native-$domain"))
+//    .settings(name := s"${`scala-native-aws-lambda`}-native-$domain")
+//    .settings(commonSettings)
+//    .settings(_baseDependencies)
+//    .settings(baseDependencies)
+//}
 
 lazy val service =
   project
@@ -32,7 +43,7 @@ lazy val service =
     .settings(commonSettings)
     .settings(baseDependencies)
     .settings(serviceDependencies)
-    .dependsOn(domain_model)
+    .dependsOn(domain_model.jvm)
 
 lazy val scala_native_service =
   project
@@ -41,13 +52,14 @@ lazy val scala_native_service =
     .settings(name := s"${`scala-native-aws-lambda`}-${`scala-native`}")
     .settings(scalaNativeSettings)
     .settings(_baseDependencies)
+    .settings(nativeAdditionalDependencies)
     .settings(baseDependencies)
     .settings(serviceDependencies)
     .settings(
       excludeDependencies ++= Seq(excl(com.github.alexarchambault.`scalacheck-shapeless_1.16`))
     )
     .settings(Compile / sources := (service / Compile / sources).value)
-    .dependsOn(domain_model)
+    .dependsOn(domain_model.native)
 
 lazy val graalvm_native_service =
   project
@@ -60,7 +72,7 @@ lazy val graalvm_native_service =
       excludeDependencies ++= Seq(excl(com.github.alexarchambault.`scalacheck-shapeless_1.16`))
     )
     .settings(Compile / sources := (service / Compile / sources).value)
-    .dependsOn(domain_model)
+    .dependsOn(domain_model.jvm)
 
 lazy val commonSettings = {
   lazy val commonCompilerPlugins = Seq(
@@ -136,6 +148,7 @@ lazy val scalaNativeSettings = {
     c.withLTO(LTO.none) // thin
       .withMode(Mode.debug) // releaseFast
       .withGC(GC.immix) // commix
+      .withLinkingOptions(c.linkingOptions :+ "-L/opt/homebrew/Cellar/openssl@3/3.0.8/lib")
   }
 }
 

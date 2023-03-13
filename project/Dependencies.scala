@@ -61,6 +61,7 @@ object Dependencies {
       circe("parser"),
       circe("refined"),
       "dev.optics" %%% "monocle-core" % Version.monocle,
+      "org.typelevel" %%% "kittens" % "3.0.0",
 
       //      refined,
       //      `refined-cats`,
@@ -74,6 +75,16 @@ object Dependencies {
       //      `circe-generic`,
       //      `circe-refined`,
       //      `monocle-core`,
+    )
+  })
+
+  val nativeAdditionalDependencies = Seq(libraryDependencies ++= {
+    Seq(
+      // for Scala native's java.security.SecureRandom,
+      // s. https://github.com/scala-native/scala-native/issues/2600#issuecomment-1242191978
+      // you should install openssl to use it (e.g. on macOS: `brew install openssl` or on Debian: `sudo apt install libssl-dev`)
+      // s. also https://scala-native.org/en/stable/lib/javalib.html#supported-classes
+      "com.github.lolgab" %%% "scala-native-crypto" % "0.0.4"
     )
   })
 
