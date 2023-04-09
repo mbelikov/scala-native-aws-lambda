@@ -1,8 +1,8 @@
 package dev.migapril.aws.lambda
 
-import org.scalatest.funspec.AnyFunSpec
-
 import java.util.UUID
+
+import org.scalatest.funspec.AnyFunSpec
 
 class modelTest extends AnyFunSpec {
   describe("Derived model")(

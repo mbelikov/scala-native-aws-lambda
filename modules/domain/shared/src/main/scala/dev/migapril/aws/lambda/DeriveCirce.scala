@@ -1,9 +1,10 @@
 package dev.migapril.aws.lambda
 
-import dev.migapril.aws.lambda.model.{ItemId, Order}
-import io.circe.{Codec, Decoder, Encoder, KeyDecoder, KeyEncoder}
+import io.circe._
 import io.circe.generic.semiauto._
 import shapeless.Unwrapped
+
+import dev.migapril.aws.lambda.model._
 
 trait DeriveCirce {
   implicit def encodeAnyVal[W, U](

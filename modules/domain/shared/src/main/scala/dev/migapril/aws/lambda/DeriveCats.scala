@@ -1,9 +1,9 @@
 package dev.migapril.aws.lambda
 
 import cats.Show
-//import cats.derived.cached.eq._
 import cats.derived.cached.showPretty._
 import cats.kernel.Eq
+
 import dev.migapril.aws.lambda.model.Order
 
 trait DeriveCats {

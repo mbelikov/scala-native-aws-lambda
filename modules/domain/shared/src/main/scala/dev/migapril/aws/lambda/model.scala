@@ -1,8 +1,10 @@
-package dev.migapril.aws.lambda
-
-import squants.Money
+package dev.migapril
+package aws
+package lambda
 
 import java.util.UUID
+
+import squants.Money
 
 /** Model class definitions with auto derived decoder, encoder, show etc. type classes.
  *

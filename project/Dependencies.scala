@@ -13,6 +13,9 @@ object Version {
 
   val logback = "1.4.5"
   val slf4j = "2.0.2"
+
+  val `scala-native-crypto` = "0.0.4"
+  val sttp = "3.8.14"
 }
 
 object Dependencies {
@@ -42,14 +45,15 @@ object Dependencies {
   val `java-logback-classic` = "ch.qos.logback" % "logback-classic" % Version.logback
   val `java-slf4j` = "org.slf4j" % "slf4j-api" % Version.slf4j
 
-  val _baseDependencies = Seq(libraryDependencies ++= {
+  val baseDependencies = Seq(libraryDependencies ++= {
     def derevo(artifact: String): ModuleID = "tf.tofu" %%% s"derevo-$artifact" % Version.derevo
 
     def circe(artifact: String): ModuleID = "io.circe" %%% s"circe-$artifact" % Version.circe
 
     Seq(
       "eu.timepit" %%% "refined" % Version.refined,
-      //      "eu.timepit" %%% "refined-cats" % Version.refined, // no scala native version
+      // no scala native versions:
+      //      "eu.timepit" %%% "refined-cats" % Version.refined,
       //      "io.estatico" %%% "newtype" % Version.newtype,
       "org.typelevel" %%% "squants" % Version.squants,
       //      derevo("core"),
@@ -63,6 +67,7 @@ object Dependencies {
       "dev.optics" %%% "monocle-core" % Version.monocle,
       "org.typelevel" %%% "kittens" % "3.0.0",
 
+      // no scala native versions:
       //      refined,
       //      `refined-cats`,
       //      newtype,
@@ -84,63 +89,31 @@ object Dependencies {
       // s. https://github.com/scala-native/scala-native/issues/2600#issuecomment-1242191978
       // you should install openssl to use it (e.g. on macOS: `brew install openssl` or on Debian: `sudo apt install libssl-dev`)
       // s. also https://scala-native.org/en/stable/lib/javalib.html#supported-classes
-      "com.github.lolgab" %%% "scala-native-crypto" % "0.0.4"
+      "com.github.lolgab" %%% "scala-native-crypto" % Version.`scala-native-crypto`
     )
   })
 
-  object com {
-    object eed3si9n {
-      object expecty {
-        val expecty =
-          "com.eed3si9n.expecty" %% "expecty" % "0.16.0"
-      }
-    }
+  val serviceDependencies = Seq(libraryDependencies ++= {
+    Seq(
+      "com.softwaremill.sttp.client3" %%% "core" % Version.sttp
+    )
+  })
 
-    object github {
-      object alexarchambault {
-        val `scalacheck-shapeless_1.16` =
-          "com.github.alexarchambault" %% "scalacheck-shapeless_1.16" % "1.3.1"
-      }
+  val baseTestDependencies = Seq(libraryDependencies ++= {
+    Seq(
+      "com.eed3si9n.expecty" %% "expecty" % "0.16.0",
+      "com.github.alexarchambault" %% "scalacheck-shapeless_1.16" % "1.3.1",
+      "org.scalacheck" %% "scalacheck" % "1.17.0",
+      "org.scalatest" %% "scalatest" % "3.2.15",
+      "org.scalatestplus" %% "scalacheck-1-17" % "3.2.15.0",
+      "org.typelevel" %% "discipline-scalatest" % "2.2.0",
+    ).map(_ % Test)
+  })
 
-      object liancheng {
-        val `organize-imports` =
-          "com.github.liancheng" %% "organize-imports" % "0.6.0"
-      }
-    }
+  // compiler plugins
+  val `better-monadic-for` = "com.olegpy" %% "better-monadic-for" % "0.3.1"
+  val `context-applied` = "org.augustjune" %% "context-applied" % "0.1.4"
+  val `kind-projector` = "org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full
 
-    object olegpy {
-      val `better-monadic-for` =
-        "com.olegpy" %% "better-monadic-for" % "0.3.1"
-    }
-  }
-
-  object org {
-    object augustjune {
-      val `context-applied` =
-        "org.augustjune" %% "context-applied" % "0.1.4"
-    }
-
-    object scalacheck {
-      val scalacheck =
-        "org.scalacheck" %% "scalacheck" % "1.17.0"
-    }
-
-    object scalatest {
-      val scalatest =
-        "org.scalatest" %% "scalatest" % "3.2.15"
-    }
-
-    object scalatestplus {
-      val `scalacheck-1-16` =
-        "org.scalatestplus" %% "scalacheck-1-17" % "3.2.15.0"
-    }
-
-    object typelevel {
-      val `discipline-scalatest` =
-        "org.typelevel" %% "discipline-scalatest" % "2.2.0"
-
-      val `kind-projector` =
-        "org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full
-    }
-  }
+  val `organize-imports` = "com.github.liancheng" %% "organize-imports" % "0.6.0"
 }

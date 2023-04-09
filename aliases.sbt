@@ -12,6 +12,10 @@ addCommandAlias("r", "run")
 addCommandAlias("rs", "reStart")
 addCommandAlias("s", "reStop")
 addCommandAlias(
+  "build-all",
+  "compile; nativeLink; graalvm_native_service / GraalVMNativeImage / packageBin",
+)
+addCommandAlias(
   "styleCheck",
   "scalafmtSbtCheck; scalafmtCheckAll; Test / compile; scalafixAll --check",
 )
