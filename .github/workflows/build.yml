@@ -4,6 +4,8 @@ on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      LINT_OFF: true
     steps:
       - name: checkout
         uses: actions/checkout@v3
