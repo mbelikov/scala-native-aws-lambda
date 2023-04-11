@@ -1,0 +1,32 @@
+name: build
+on: [ push ]
+
+jobs:
+  test:
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup graalvm
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.3.0'
+          java-version: '17'
+          components: 'native-image'
+
+      - name: build
+        run: |
+          export SBT_OPTS="-Xmx6G -Xss5M"
+          sbt clean build-all
+
+      - name: upload graalvm binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: graalvm-native-service
+          path: modules/graalvm-native-service/target/graalvm-native-image/
+
+      - name: upload scala native binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: scala-native-service
+          path: modules/scala-native-service/target/scala-2.13/scala-native-aws-lambda-scala-native-service-out

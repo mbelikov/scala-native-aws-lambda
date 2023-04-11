@@ -33,26 +33,25 @@ object Main {
       }
   }
 
-  private def handleRequestData(requestData: RequestData, responseUrl: String => String) = (
-    for {
+  private def handleRequestData(requestData: RequestData, responseUrl: String => String) =
+    (for {
       order <- parseRequestString(requestData.payload)
       _ <- handleOrder(order, requestData)
-    } yield order
-    ).fold(
-    error => {
-      logError(s"Error handling request: $error")
-      postLambdaResponse(responseUrl(requestData.requestId))(
-        ResponseData(code = error.code, message = error.cause)
-      )
-    },
-    success =>
-      postLambdaResponse(responseUrl(requestData.requestId))(
-        ResponseData(
-          code = 200,
-          message = s"Successfully handled for id: ${success.id.value}",
+    } yield order).fold(
+      error => {
+        logError(s"Error handling request: $error")
+        postLambdaResponse(responseUrl(requestData.requestId))(
+          ResponseData(code = error.code, message = error.cause)
         )
-      ),
-  )
+      },
+      success =>
+        postLambdaResponse(responseUrl(requestData.requestId))(
+          ResponseData(
+            code = 200,
+            message = s"Successfully handled for id: ${success.id.value}",
+          )
+        ),
+    )
 
   private def getRequestData(nextEventUrl: String) =
     for {
