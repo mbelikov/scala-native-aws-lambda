@@ -16,7 +16,10 @@ jobs:
           components: 'native-image'
 
       - name: install additional native dependencies
-        run: sudo apt-get install -y clang libstdc++-12-dev libgc-dev
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: clang lldb lld libstdc++-12-dev libgc-dev libssl-dev
+          version: 1.0
 
       - name: build
         run: |
