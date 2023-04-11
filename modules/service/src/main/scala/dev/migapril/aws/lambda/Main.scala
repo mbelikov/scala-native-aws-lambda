@@ -100,15 +100,14 @@ object Main {
   private def handleOrder(
                            order: model.Order,
                            requestData: RequestData,
-                         ): Either[Error, Unit] =
-    Right {
-      Console
-        .out
-        .println(
-          s"Received: $order, requestId: ${requestData.requestId}, deadlineMs: ${requestData.deadlineMs}"
-        )
-      OrderStore.store(order)
-    }
+                         ): Either[Error, Unit] = {
+    Console
+      .out
+      .println(
+        s"Received: $order, requestId: ${requestData.requestId}, deadlineMs: ${requestData.deadlineMs}"
+      )
+    OrderStore.store(order)
+  }
 
   private def getNextEventUrl(host: String) =
     s"http://$host/2018-06-01/runtime/invocation/next"

@@ -32,7 +32,6 @@ object lambda {
                                )
 
   object ResponseData {
-
     import io.circe.Codec
     import io.circe.generic.semiauto._
 
