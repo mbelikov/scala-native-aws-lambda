@@ -9,11 +9,12 @@ ThisBuild / scalacOptions ++= Seq(
 ThisBuild / warnings := {
   if (insideCI.value)
     Seq(
-      "-Wconf:cat=lint-byname-implicit:wv,any:error", // for scalac warnings
-      "-Xfatal-warnings", // for wartremover warts
+      "-Wconf:cat=lint-byname-implicit:wv,any:error" // for scalac warnings
     )
   else if (lintOn.value)
-    Seq("-Wconf:any:warning")
+    Seq(
+      "-Wconf:any:warning"
+    )
   else
     Seq("-Wconf:any:silent")
 }
