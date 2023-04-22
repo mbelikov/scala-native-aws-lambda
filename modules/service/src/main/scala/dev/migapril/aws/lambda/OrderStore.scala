@@ -3,13 +3,6 @@ package lambda
 
 import dev.migapril.aws.lambda.model.Order
 
-object OrderStore {
-  def store(order: Order): Either[Error, Unit] =
-    Right(
-      Console
-        .out
-        .println(
-          s"Stored: $order"
-        )
-    )
+object OrderStore extends Logging {
+  def store(order: Order): Either[Error, Unit] = Right(logInfo(s"Stored: $order"))
 }

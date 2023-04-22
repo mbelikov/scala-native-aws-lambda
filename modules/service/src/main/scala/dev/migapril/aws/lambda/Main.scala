@@ -10,13 +10,10 @@ import sttp.client3._
 import dev.migapril.aws.lambda.HttpOps._
 import dev.migapril.aws.lambda.lambda._
 
-object Main {
+object Main extends Logging {
   def main(args: Array[String]): Unit = {
     val runtimeApiHost = sys.env("AWS_LAMBDA_RUNTIME_API")
     handleEvents(runtimeApiHost)
-
-    // to demonstrate how scala native compilation is working
-    doJavaCode()
   }
 
   private val httpClient = SimpleHttpClient()
@@ -101,11 +98,9 @@ object Main {
                            order: model.Order,
                            requestData: RequestData,
                          ): Either[Error, Unit] = {
-    Console
-      .out
-      .println(
-        s"Received: $order, requestId: ${requestData.requestId}, deadlineMs: ${requestData.deadlineMs}"
-      )
+    logInfo(
+      s"Received: $order, requestId: ${requestData.requestId}, deadlineMs: ${requestData.deadlineMs}"
+    )
     OrderStore.store(order)
   }
 
@@ -114,14 +109,4 @@ object Main {
 
   private def getResponseUrl(host: String)(requestId: String) =
     s"http://$host/2018-06-01/runtime/invocation/$requestId/response"
-
-  private def doJavaCode() = {
-    // java code
-    //    val _ = this.getClass.getConstructors
-    //    val cd: javax.management.openmbean.CompositeData = ???
-    //    val _ = java.lang.management.MonitorInfo.from(cd)
-  }
-
-  private def logError(message: String): Unit =
-    Console.err.println(message)
 }

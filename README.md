@@ -1,6 +1,15 @@
 # scala-native-aws-lambda
 
-Spike how the scala-native and graalvm-native-image could be used for creation AWS lambdas with Scala
+Spike about how the
+
+- scala-native and
+- graalvm-native-image
+
+could be both used for AWS lambdas implementation with Scala.
+The code base is shared between the builds.
+
+The need of the scala-native support limits the choice of the used Scala libraries: not every Scala library by far
+provides a scala-native build.
 
 ## Compilation
 
@@ -10,11 +19,21 @@ Spike how the scala-native and graalvm-native-image could be used for creation A
 
     sbt test
 
-## Scala native build
+## Build
+
+The project has an alias to build both scala-native and graalvm natime image flavours of the lambda:
+
+    sbt build-all
+
+It is still possible to build them separately.
+
+NB: the builds are only possible for the same target CPU architecture and OS where the build is running.
+
+### Scala native build
 
     sbt nativeLink
 
-## Graalvm native image build
+### Graalvm native image build
 
 Ensure you have graalvm tools in the path like
 
