@@ -16,6 +16,7 @@ object Version {
 
   val `scala-native-crypto` = "0.0.4"
   val sttp = "3.8.14"
+//  val woof = "0.6.0"
 }
 
 object Dependencies {
@@ -95,7 +96,8 @@ object Dependencies {
 
   val serviceDependencies = Seq(libraryDependencies ++= {
     Seq(
-      "com.softwaremill.sttp.client3" %%% "core" % Version.sttp
+      "com.softwaremill.sttp.client3" %%% "core" % Version.sttp,
+      //      "org.legogroup" %% "woof-core" % Version.woof,
     )
   })
 

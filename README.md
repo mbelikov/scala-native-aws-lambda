@@ -1,5 +1,11 @@
 # scala-native-aws-lambda
 
+> **_STATUS:_** wip
+> - [x] building & executable creation automation
+> - [ ] logging
+> - [ ] redis lib integration
+> - [ ] AWS SQS libs integration
+
 Spike about how the
 
 - scala-native and
