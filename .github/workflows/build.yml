@@ -26,14 +26,27 @@ jobs:
           export SBT_OPTS="-Xmx6G -Xss5M"
           sbt clean build-all
 
+      - name: create graalvm upload.zip
+        run: |
+          zip upload.zip dist/bootstrap modules/graalvm-native-service/target/graalvm-native-image/scala-native-aws-lambda-graalvm-native-service
+
       - name: upload graalvm binary
         uses: actions/upload-artifact@v3
         with:
           name: graalvm-native-service
           path: modules/graalvm-native-service/target/graalvm-native-image/
+          retention-days: 14
+
+      - name: upload graalvm upload.zip
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload.zip
+          path: upload.zip
+          retention-days: 14
 
       - name: upload scala native binary
         uses: actions/upload-artifact@v3
         with:
           name: scala-native-service
           path: modules/scala-native-service/target/scala-2.13/scala-native-aws-lambda-scala-native-service-out
+          retention-days: 14

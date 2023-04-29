@@ -103,6 +103,10 @@ lazy val graalvmNativeSettings =
 // graalvm native image configuration
   graalVMNativeImageOptions ++= Seq(
     "--no-fallback", // build a standalone image or report a failure
+    "--install-exit-handlers",
+    "--enable-http",
+    "-H:+StaticExecutableWithDynamicLibC",
+    "-H:+RemoveSaturatedTypeFlows",
     "--link-at-build-time",
     "--report-unsupported-elements-at-runtime",
     "--verbose",

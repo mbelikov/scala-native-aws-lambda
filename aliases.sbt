@@ -16,6 +16,10 @@ addCommandAlias(
   "compile; nativeLink; graalvm_native_service / GraalVMNativeImage / packageBin",
 )
 addCommandAlias(
+  "build-graal",
+  "clean; compile; graalvm_native_service / GraalVMNativeImage / packageBin",
+)
+addCommandAlias(
   "styleCheck",
   "scalafmtSbtCheck; scalafmtCheckAll; Test / compile; scalafixAll --check",
 )
